@@ -1,0 +1,440 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is api assignment with basic CRUD (Create , Read , Update , Delete)",
+        "version": "1.0.0",
+        "title": "API Assignment",
+        "contact": {
+            "email": "dhruvrkashyap@gmail.com"
+        }
+    },
+    "host": "localhost:4000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "user",
+            "description": "Operations on users"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get all users",
+                "description": "This should be used to get all users data.",
+                "operationId": "getUsers",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "All users data.",
+                        "schema": {
+                            "$ref": "#/definitions/Users"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Create user",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "createUser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Created user object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateUserSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully added user data.",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/{id}": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get user by user id",
+                "description": "This should be used to get user data.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id that needs to be fetched.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User data",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request.",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Update user",
+                "description": "This should be used to update user.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User id to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "New updated user object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateUserSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data before update",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid user supplied",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Delete user",
+                "description": "This should be used to delete user.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The user id that needs to be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data before delete",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid user supplied",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    
+    "definitions": {
+        "ApiResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "object"
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "data": {
+                    "$ref": "#/definitions/UserSchema"
+                }
+            },
+            "xml": {
+                "name": "User"
+            }
+        },
+        "Users": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserSchema"
+                    }
+                }
+            },
+            "xml": {
+                "name": "Users"
+            }
+        },
+        "CreateUserSchema": {
+            "type": "object",
+            "required": [
+                "name",
+                "age",
+                "email",
+                "gender",
+                "mobile_number",
+                "birthday",
+                "city",
+                "state",
+                "country",
+                "address_1"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Dhruv Raj Kashyap"
+                },
+                "age": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 22
+                },
+                "email": {
+                    "type": "string",
+                    "example": "dhruvrkashyap@gmail.com"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male",
+                    "enum": [
+                        "male",
+                        "female"
+                    ]
+                },
+                "mobile_number": {
+                    "type": "integer",
+                    "example": 9968046637
+                },
+                "birthday": {
+                    "type": "string",
+                    "example": "06-03-2001"
+                },
+                "city": {
+                    "type": "string",
+                    "example": "Ghaziabad"
+                },
+                "state": {
+                    "type": "string",
+                    "example": "UP"
+                },
+                "country": {
+                    "type": "string",
+                    "example": "India"
+                },
+                "address_1": {
+                    "type": "string",
+                    "example": "B-8"
+                },
+                "address_2": {
+                    "type": "string",
+                    "example": "Ashok Nagar"
+                }
+            },
+            "xml": {
+                "name": "CreateUserSchema"
+            }
+        },
+        "UserSchema": {
+            "type": "object",
+            "required": [
+                "id",
+                "name",
+                "age",
+                "email",
+                "gender",
+                "mobile_number",
+                "birthday",
+                "city",
+                "state",
+                "country",
+                "address_1"
+            ],
+            "properties": {
+                "id": {
+                    "type": "ObjectID",
+                    "example": "641ad9ca0ee3ab5052efd1a3",
+                    "uniqueItems": true
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Dhruv Raj Kashyp"
+                },
+                "age": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 22
+                },
+                "email": {
+                    "type": "string",
+                    "example": "dhruvrkashyap@gmail.com"
+                },
+                "gender": {
+                    "type": "string",
+                    "example": "male",
+                    "enum": [
+                        "male",
+                        "female"
+                    ]
+                },
+                "mobile_number": {
+                    "type": "integer",
+                    "example": 9968046637
+                },
+                "birthday": {
+                    "type": "string",
+                    "example": "2001-03-06"
+                },
+                "city": {
+                    "type": "string",
+                    "example": "Ghaziabad"
+                },
+                "state": {
+                    "type": "string",
+                    "example": "UP"
+                },
+                "country": {
+                    "type": "string",
+                    "example": "India"
+                },
+                "address_1": {
+                    "type": "string",
+                    "example": "B-8"
+                },
+                "address_2": {
+                    "type": "string",
+                    "example": "Ashok Nagar"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2023-03-22T10:34:50.042+00:00"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2023-03-22T10:34:50.042+00:00"
+                }
+            },
+            "xml": {
+                "name": "UserSchema"
+            }
+        }
+    }
+}
